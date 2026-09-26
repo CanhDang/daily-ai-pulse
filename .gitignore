@@ -2,11 +2,15 @@
 .gradle/
 build/
 
+# Kotlin compiler caches
+.kotlin/
+
 # Local configuration file (sdk path, etc)
 local.properties
 
 # Log/OS Files
 *.log
+.DS_Store
 
 # Android Studio generated files and folders
 captures/
@@ -14,11 +18,14 @@ captures/
 .cxx/
 *.aab
 *.apk
+*.ap_
+*.dex
 output-metadata.json
 
 # IntelliJ
 *.iml
-.idea/
+.idea/*
+!.idea/codeStyles/
 misc.xml
 deploymentTargetDropDown.xml
 render.experimental.xml
@@ -32,3 +39,6 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Claude Code personal settings
+.claude/settings.local.json
