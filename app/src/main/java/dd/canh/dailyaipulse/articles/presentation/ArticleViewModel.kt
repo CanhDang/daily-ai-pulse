@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
-private const val UNKNOWN_ERROR_MESSAGE = "Something went wrong"
+private const val GENERIC_ERROR_MESSAGE = "Something went wrong, please try again later"
 
 @HiltViewModel
 class ArticleViewModel @Inject constructor(
@@ -37,7 +37,7 @@ class ArticleViewModel @Inject constructor(
                 throw e
             } catch (e: Exception) {
                 Timber.e(e, "Failed to load articles")
-                emitState(ArticleUIState.Error(e.message ?: UNKNOWN_ERROR_MESSAGE))
+                emitState(ArticleUIState.Error(GENERIC_ERROR_MESSAGE))
             }
         }
     }

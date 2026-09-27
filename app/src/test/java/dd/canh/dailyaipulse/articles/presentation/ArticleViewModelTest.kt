@@ -63,12 +63,12 @@ class ArticleViewModelTest {
     }
 
     @Test
-    fun `emits Error when the request fails`() = runTest(testDispatcher) {
+    fun `emits user-friendly Error when the request fails`() = runTest(testDispatcher) {
         val viewModel = createViewModel(FakeArticleApi(error = IOException("No internet")))
 
         advanceUntilIdle()
 
-        assertEquals(ArticleUIState.Error("No internet"), viewModel.uiState.value)
+        assertEquals(ArticleUIState.Error("Something went wrong, please try again later"), viewModel.uiState.value)
     }
 
     private fun createViewModel(api: FakeArticleApi) =
