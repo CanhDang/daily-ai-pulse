@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.time.Clock
 import javax.inject.Inject
 
 private const val GENERIC_ERROR_MESSAGE = "Something went wrong, please try again later"
@@ -17,6 +18,7 @@ private const val GENERIC_ERROR_MESSAGE = "Something went wrong, please try agai
 @HiltViewModel
 class ArticleViewModel @Inject constructor(
     private val articleRepository: ArticleRepository,
+    private val clock: Clock,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<ArticleUIState>(ArticleUIState.Loading)
@@ -30,7 +32,7 @@ class ArticleViewModel @Inject constructor(
         viewModelScope.launch {
             emitState(ArticleUIState.Loading)
             try {
-                val articles = articleRepository.getArticles().map { it.toArticle() }
+                val articles = articleRepository.getArticles().map { it.toArticle(clock) }
                 emitState(ArticleUIState.Success(articles))
             } catch (e: CancellationException) {
                 // Cancellation must propagate, otherwise the coroutine keeps running.

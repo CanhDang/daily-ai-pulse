@@ -1,26 +1,32 @@
 package dd.canh.dailyaipulse.articles.presentation
 
 import dd.canh.dailyaipulse.articles.data.ArticleData
+import java.time.Clock
 import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
+import java.time.LocalDate
 import java.time.format.DateTimeParseException
-import java.util.Locale
+import java.time.temporal.ChronoUnit
 
-private const val DISPLAY_DATE_PATTERN = "MMM d, yyyy"
-
-fun ArticleData.toArticle(): Article = Article(
+fun ArticleData.toArticle(clock: Clock): Article = Article(
     title = title,
     description = description,
     imageUrl = imageUrl,
-    date = formatDate(date),
+    date = toRelativeDate(date, clock),
     sourceName = source.name,
 )
 
-// Falls back to the raw value so a bad date never hides the article.
-private fun formatDate(isoDate: String): String = try {
-    val formatter = DateTimeFormatter.ofPattern(DISPLAY_DATE_PATTERN, Locale.getDefault())
-    Instant.parse(isoDate).atZone(ZoneId.systemDefault()).format(formatter)
-} catch (e: DateTimeParseException) {
-    isoDate
+private fun toRelativeDate(isoDate: String, clock: Clock): String {
+    val publishedDate = try {
+        Instant.parse(isoDate).atZone(clock.zone).toLocalDate()
+    } catch (e: DateTimeParseException) {
+        // Falls back to the raw value so a bad date never hides the article.
+        return isoDate
+    }
+    val daysAgo = ChronoUnit.DAYS.between(publishedDate, LocalDate.now(clock))
+    return when {
+        // Negative means a future date, e.g. a slightly wrong device clock.
+        daysAgo <= 0 -> "Today"
+        daysAgo == 1L -> "Yesterday"
+        else -> "$daysAgo days ago"
+    }
 }

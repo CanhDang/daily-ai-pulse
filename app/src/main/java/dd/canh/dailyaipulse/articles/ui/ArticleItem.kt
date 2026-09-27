@@ -72,7 +72,7 @@ private fun ArticleItemPreview() {
                 title = "Former Prince Andrew moves out of Windsor's Royal Lodge",
                 description = "A short description of the article.",
                 imageUrl = null,
-                date = "Feb 4, 2026",
+                date = "2 days ago",
                 sourceName = "CNN",
             ),
         )

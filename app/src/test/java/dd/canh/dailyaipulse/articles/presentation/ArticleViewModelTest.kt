@@ -15,6 +15,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import java.io.IOException
+import java.time.Clock
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ArticleViewModelTest {
@@ -72,5 +73,5 @@ class ArticleViewModelTest {
     }
 
     private fun createViewModel(api: FakeArticleApi) =
-        ArticleViewModel(ArticleRepository(api))
+        ArticleViewModel(ArticleRepository(api), Clock.systemUTC())
 }
