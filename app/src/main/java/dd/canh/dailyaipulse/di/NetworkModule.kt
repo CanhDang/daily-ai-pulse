@@ -7,6 +7,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dd.canh.dailyaipulse.BuildConfig
 import dd.canh.dailyaipulse.articles.data.ArticleApi
+import dd.canh.dailyaipulse.sources.data.SourceApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -61,4 +62,8 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideArticleApi(retrofit: Retrofit): ArticleApi = retrofit.create()
+
+    @Provides
+    @Singleton
+    fun provideSourceApi(retrofit: Retrofit): SourceApi = retrofit.create()
 }
